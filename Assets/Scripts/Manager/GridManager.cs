@@ -1,6 +1,6 @@
 using ISN.Entity;
 using ISN.Character;
-using SIN.SO;
+using ISN.SO;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;

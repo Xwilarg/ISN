@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace SIN.SO
+namespace ISN.SO
 {
     [CreateAssetMenu(menuName = "ScriptableObject/TileInfo", fileName = "TileInfo")]
     public class TileInfo : ScriptableObject

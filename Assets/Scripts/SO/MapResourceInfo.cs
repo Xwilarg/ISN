@@ -1,9 +1,10 @@
 using UnityEngine;
 
-namespace SIN.SO
+namespace ISN.SO
 {
     public abstract class MapResourceInfo : ScriptableObject
     {
+        [Header("Generic data")]
         public string Key;
         public GameObject Prefab;
 
