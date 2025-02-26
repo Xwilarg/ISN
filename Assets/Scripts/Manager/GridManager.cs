@@ -1,5 +1,5 @@
 using ISN.Entity;
-using ISN.Player;
+using ISN.Character;
 using SIN.SO;
 using System.Collections.Generic;
 using System.Linq;

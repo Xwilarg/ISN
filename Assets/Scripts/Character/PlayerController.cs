@@ -3,9 +3,9 @@ using ISN.Manager;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace ISN.Player
+namespace ISN.Character
 {
-    public class PlayerController : MonoBehaviour, IGridEntity
+    public class PlayerController : ACharacter, IGridEntity
     {
         public static PlayerController Instance { private set; get; }
         public Vector2Int CurrentPosition { set; private get; }
