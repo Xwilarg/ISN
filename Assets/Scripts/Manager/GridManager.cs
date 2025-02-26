@@ -63,7 +63,6 @@ namespace ISN.Manager
             var lines = mapInfo[0]
                 .Replace("\r", "")
                 .Split('\n')
-                .Select(x => x.ToCharArray().Reverse().ToArray())
                 .Reverse()
                 .ToArray();
             for (int y = 0; y < lines.Length; y++)
