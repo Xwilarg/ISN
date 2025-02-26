@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a2832cade5e6a641a97a1b8b8c32be1, type: 3}
+  m_Name: UnbreakableWall
+  m_EditorClassIdentifier: 
+  Character: 87
+  Sprite: {fileID: -5356574185940491189, guid: aa30b62ca3c907e4bb070207620bbae7, type: 3}
