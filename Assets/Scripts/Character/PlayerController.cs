@@ -23,7 +23,13 @@ namespace ISN.Character
 
         private Vector2Int ToVector2Int(Vector2 v)
         {
-            return new Vector2Int(Mathf.CeilToInt(v.x), Mathf.CeilToInt(v.y));
+            int x = 0;
+            int y = 0;
+            if (v.x > 0f) x = 1;
+            else if (v.x < 0f) x = -1;
+            if (v.y > 0f) y = 1;
+            else if (v.y < 0f) y = -1;
+            return new Vector2Int(x, y);
         }
 
         public void OnMove(InputAction.CallbackContext value)
