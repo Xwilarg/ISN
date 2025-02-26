@@ -28,7 +28,7 @@ namespace ISN.Character
 
         public void OnMove(InputAction.CallbackContext value)
         {
-            if (value.phase == InputActionPhase.Started)
+            if (value.phase == InputActionPhase.Started && !VNManager.Instance.IsPlayingStory)
             {
                 var dir = ToVector2Int(value.ReadValue<Vector2>());
                 GridManager.Instance.TryMove(CurrentPosition, dir);
@@ -40,11 +40,27 @@ namespace ISN.Character
         {
             if (value.phase == InputActionPhase.Started)
             {
-                var target = GridManager.Instance.Get(CurrentPosition + _lookDirection);
-                if (target != null && target.GameObject.TryGetComponent<IInteractable>(out var interactible))
+                if (VNManager.Instance.IsPlayingStory)
                 {
-                    interactible.Interact(this);
+                    VNManager.Instance.OnNextDialogue();
                 }
+                else
+                {
+                    var target = GridManager.Instance.Get(CurrentPosition + _lookDirection);
+                    if (target != null && target.GameObject.TryGetComponent<IInteractable>(out var interactible))
+                    {
+                        interactible.Interact(this);
+                    }
+                }
+            }
+        }
+
+        public void OnDialogueSkip(InputAction.CallbackContext value)
+        {
+            if (VNManager.Instance.IsPlayingStory)
+            {
+                if (value.phase == InputActionPhase.Started) VNManager.Instance.OnSkip(true);
+                else if (value.phase == InputActionPhase.Canceled) VNManager.Instance.OnSkip(true);
             }
         }
     }
