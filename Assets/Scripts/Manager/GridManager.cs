@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using NUnit.Framework.Internal;
 
 namespace ISN.Manager
 {
@@ -111,19 +112,29 @@ namespace ISN.Manager
             }
         }
 
+        private Tile GetTile(Vector2Int position)
+        {
+            if (position.y >= _map.Count || position.x >= _map[position.y].Count)
+            {
+                return null; // Out of bounds
+            }
+            return _map[position.y][position.x];
+        }
+
+        public IGridEntity Get(Vector2Int position)
+        {
+            var tile = GetTile(position);
+            return tile?.ContainedEntity;
+        }
+
         public bool TryMove(Vector2Int current, Vector2Int direction)
         {
             var tile = _map[current.y][current.x];
             Assert.IsNotNull(tile.ContainedEntity);
 
             var dest = current + direction;
-            if (dest.y >= _map.Count || dest.x >= _map[dest.y].Count)
-            {
-                return false; // Out of bounds
-            }
-
-            var destTile = _map[dest.y][dest.x];
-            if (!destTile.TileInfo.IsWalkable || destTile.ContainedEntity != null)
+            var destTile = GetTile(dest);
+            if (destTile == null || !destTile.TileInfo.IsWalkable || destTile.ContainedEntity != null)
             {
                 return false;
             }

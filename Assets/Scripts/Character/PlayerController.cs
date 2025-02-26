@@ -1,4 +1,6 @@
+using ISN.Entity;
 using ISN.Manager;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -32,6 +34,18 @@ namespace ISN.Character
                 var dir = ToVector2Int(value.ReadValue<Vector2>());
                 GridManager.Instance.TryMove(CurrentPosition, dir);
                 _lookDirection = dir;
+            }
+        }
+
+        public void OnInteract(InputAction.CallbackContext value)
+        {
+            if (value.phase == InputActionPhase.Started)
+            {
+                var target = GridManager.Instance.Get(CurrentPosition + _lookDirection);
+                if (target != null && target.GameObject.TryGetComponent<IInteractable>(out var interactible))
+                {
+                    interactible.Interact(this);
+                }
             }
         }
     }

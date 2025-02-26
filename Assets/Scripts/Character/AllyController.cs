@@ -1,12 +1,13 @@
 using ISN.Entity;
+using UnityEngine;
 
 namespace ISN.Character
 {
     public class AllyController : ACharacter, IInteractable
     {
-        public void Interact()
+        public void Interact(PlayerController pc)
         {
-            throw new System.NotImplementedException();
+            Debug.Log("Interaction");
         }
     }
 }
