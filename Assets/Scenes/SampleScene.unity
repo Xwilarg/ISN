@@ -598,8 +598,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d9d473c5b83f46147967ef26f14ff952, type: 2}
   - {fileID: 11400000, guid: bc1307add45dc444fb3095c89371c3af, type: 2}
   _tilePrefab: {fileID: 2882937730962441860, guid: 01b3e8aa2b1c3c246b6e7feeceb6a887, type: 3}
-  _resources:
-  - {fileID: 11400000, guid: 732f576d8974b5d439a3c12c0d671467, type: 2}
 --- !u!114 &770417482
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -612,6 +610,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d605174452f99f4babf9e542b2b9c64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _resources:
+  - {fileID: 11400000, guid: 732f576d8974b5d439a3c12c0d671467, type: 2}
 --- !u!1 &1715087702
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,7 +7,6 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using NUnit.Framework.Internal;
 
 namespace ISN.Manager
 {
@@ -21,9 +20,6 @@ namespace ISN.Manager
 
         [SerializeField]
         private GameObject _tilePrefab;
-
-        [SerializeField]
-        private MapResourceInfo[] _resources;
 
         private const float TileSize = 128;
         private const float TileSizeUnit = 1.28f;
@@ -97,7 +93,7 @@ namespace ISN.Manager
                     {
                         var data = entityData[c.ToString()];
                         // Init resource from file
-                        var targetResource = _resources.First(x => x.Key == data.Key);
+                        var targetResource = ResourceManager.Instance.GetMapResource<MapResourceInfo>(data.Key);
                         var speEntity = Instantiate(targetResource.Prefab, _mapContainer);
                         targetResource.InitSelf(speEntity);
 
