@@ -1,3 +1,5 @@
+using ISN.Entity;
+using ISN.Player;
 using SIN.SO;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,12 +39,17 @@ namespace ISN.Manager
                     Destroy(_mapContainer.GetChild(i).gameObject);
                 }
                 Destroy(_mapContainer.gameObject);
-                _mapContainer = new GameObject("Map").transform;
                 _map.Clear();
             }
+            _mapContainer = new GameObject("Map").transform;
 
             // Parse map from file
-            var lines = map.text.Replace("\r", "").Split('\n');
+            var lines = map.text
+                .Replace("\r", "")
+                .Split('\n')
+                .Select(x => x.ToCharArray().Reverse().ToArray())
+                .Reverse()
+                .ToArray();
             for (int y = 0; y < lines.Length; y++)
             {
                 List<Tile> tiles = new();
@@ -57,11 +64,18 @@ namespace ISN.Manager
                     var obj = Instantiate(_tilePrefab, _mapContainer);
                     obj.transform.position = new Vector2(x, y) * TileSizeUnit;
                     obj.GetComponent<SpriteRenderer>().sprite = info.Sprite;
-                    tiles.Add(new Tile()
+                    var tile = new Tile()
                     {
-                        TileInfo = info, 
+                        TileInfo = info,
                         TileObject = obj
-                    });
+                    };
+
+                    if (c == 'S') // Player spawn
+                    {
+                        tile.ContainedEntity = PlayerController.Instance;
+                        PlayerController.Instance.transform.position = new Vector2(x, y) * TileSizeUnit;
+                    }
+                    tiles.Add(tile);
                 }
                 _map.Add(tiles);
             }
@@ -72,5 +86,6 @@ namespace ISN.Manager
     {
         public TileInfo TileInfo { set; get; }
         public GameObject TileObject { set; get; }
+        public IGridEntity ContainedEntity { set; get; }
     }
 }
