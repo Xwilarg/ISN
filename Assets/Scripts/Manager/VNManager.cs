@@ -101,7 +101,6 @@ namespace ISN.Manager
 
         public void ShowStory(TextAsset asset)
         {
-            Debug.Log($"[STORY] Playing {asset.name}");
             _currentSpeaker = null;
             _story = new(asset.text);
             ResetVN();
@@ -171,7 +170,6 @@ namespace ISN.Manager
             else if (!_story.canContinue && !_story.currentChoices.Any())
             {
                 _container.SetActive(false);
-                SceneManager.LoadScene("Main");
             }
         }
 
