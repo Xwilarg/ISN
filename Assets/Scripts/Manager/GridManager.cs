@@ -21,6 +21,9 @@ namespace ISN.Manager
         [SerializeField]
         private GameObject _tilePrefab;
 
+        [SerializeField]
+        private MapResourceInfo[] _resources;
+
         private const float TileSize = 128;
         private const float TileSizeUnit = 1.28f;
 
@@ -93,11 +96,12 @@ namespace ISN.Manager
                     else if (c >= '0' && c <= '9') // Special events
                     {
                         var data = entityData[c.ToString()];
-                        var speEntity = Instantiate(data.Type switch
-                        {
-                            "ally" => ResourceManager.Instance.AllyPrefab,
-                            _ => throw new System.NotImplementedException($"Unknown type {data.Type}")
-                        }, _mapContainer);
+                        // Init resource from file
+                        var targetResource = _resources.First(x => x.Key == data.Key);
+                        var speEntity = Instantiate(targetResource.Prefab, _mapContainer);
+                        targetResource.InitSelf(speEntity);
+
+                        // Place it on the grid
                         tile.ContainedEntity = speEntity.GetComponent<IGridEntity>();
                         tile.ContainedEntity.CurrentPosition = new Vector2Int(x, y);
                         speEntity.transform.position = new Vector2(x, y) * TileSizeUnit;
@@ -142,6 +146,6 @@ namespace ISN.Manager
 
     public class MapInfo
     {
-        public string Type { set; get; }
+        public string Key { set; get; }
     }
 }

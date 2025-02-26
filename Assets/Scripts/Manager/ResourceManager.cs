@@ -6,10 +6,6 @@ namespace ISN.Manager
     {
         public static ResourceManager Instance { private set; get; }
 
-        [SerializeField]
-        private GameObject _allyPrefab;
-        public GameObject AllyPrefab => _allyPrefab;
-
         private void Awake()
         {
             Instance = this;
