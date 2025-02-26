@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Character: 46
   Sprite: {fileID: 199249360466117110, guid: 0a6f59baac6336d4194fd44eacad33bd, type: 3}
+  IsWalkable: 1

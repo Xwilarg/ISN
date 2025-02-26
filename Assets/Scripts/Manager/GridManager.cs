@@ -4,6 +4,7 @@ using SIN.SO;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace ISN.Manager
 {
@@ -73,12 +74,37 @@ namespace ISN.Manager
                     if (c == 'S') // Player spawn
                     {
                         tile.ContainedEntity = PlayerController.Instance;
+                        tile.ContainedEntity.CurrentPosition = new Vector2Int(x, y);
                         PlayerController.Instance.transform.position = new Vector2(x, y) * TileSizeUnit;
                     }
                     tiles.Add(tile);
                 }
                 _map.Add(tiles);
             }
+        }
+
+        public bool TryMove(Vector2Int current, Vector2Int direction)
+        {
+            var tile = _map[current.y][current.x];
+            Assert.IsNotNull(tile.ContainedEntity);
+
+            var dest = current + direction;
+            if (dest.y >= _map.Count || dest.x >= _map[dest.y].Count)
+            {
+                return false; // Out of bounds
+            }
+
+            var destTile = _map[dest.y][dest.x];
+            if (!destTile.TileInfo.IsWalkable)
+            {
+                return false;
+            }
+
+            destTile.ContainedEntity = tile.ContainedEntity;
+            destTile.ContainedEntity.CurrentPosition = dest;
+            destTile.ContainedEntity.GameObject.transform.position = (Vector2)dest * TileSizeUnit;
+            tile.ContainedEntity = null;
+            return true;
         }
     }
 

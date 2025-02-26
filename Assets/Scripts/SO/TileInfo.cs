@@ -7,5 +7,7 @@ namespace SIN.SO
     {
         public char Character;
         public Sprite Sprite;
+
+        public bool IsWalkable;
     }
 }
