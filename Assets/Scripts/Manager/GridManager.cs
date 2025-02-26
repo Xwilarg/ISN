@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace ISN.Manager
 {
@@ -44,8 +46,18 @@ namespace ISN.Manager
             }
             _mapContainer = new GameObject("Map").transform;
 
+            var mapInfo = map.text.Split('=').Select(x => x.Trim()).ToArray();
+
+            var entityData = JsonConvert.DeserializeObject<Dictionary<string, MapInfo>>(mapInfo[1], new JsonSerializerSettings()
+            {
+                ContractResolver = new DefaultContractResolver()
+                {
+                    NamingStrategy = new SnakeCaseNamingStrategy()
+                }
+            });
+
             // Parse map from file
-            var lines = map.text
+            var lines = mapInfo[0]
                 .Replace("\r", "")
                 .Split('\n')
                 .Select(x => x.ToCharArray().Reverse().ToArray())
@@ -60,6 +72,7 @@ namespace ISN.Manager
                     var info = c switch
                     {
                         'S' => _defaultTile,
+                        _ when c >= '0' && c <= '9' => _defaultTile,
                         _ => _tiles.First(x => x.Character == c)
                     };
                     var obj = Instantiate(_tilePrefab, _mapContainer);
@@ -76,6 +89,18 @@ namespace ISN.Manager
                         tile.ContainedEntity = PlayerController.Instance;
                         tile.ContainedEntity.CurrentPosition = new Vector2Int(x, y);
                         PlayerController.Instance.transform.position = new Vector2(x, y) * TileSizeUnit;
+                    }
+                    else if (c >= '0' && c <= '9') // Special events
+                    {
+                        var data = entityData[c.ToString()];
+                        var speEntity = Instantiate(data.Type switch
+                        {
+                            "ally" => ResourceManager.Instance.AllyPrefab,
+                            _ => throw new System.NotImplementedException($"Unknown type {data.Type}")
+                        }, _mapContainer);
+                        tile.ContainedEntity = speEntity.GetComponent<IGridEntity>();
+                        tile.ContainedEntity.CurrentPosition = new Vector2Int(x, y);
+                        speEntity.transform.position = new Vector2(x, y) * TileSizeUnit;
                     }
                     tiles.Add(tile);
                 }
@@ -95,7 +120,7 @@ namespace ISN.Manager
             }
 
             var destTile = _map[dest.y][dest.x];
-            if (!destTile.TileInfo.IsWalkable)
+            if (!destTile.TileInfo.IsWalkable || destTile.ContainedEntity != null)
             {
                 return false;
             }
@@ -113,5 +138,10 @@ namespace ISN.Manager
         public TileInfo TileInfo { set; get; }
         public GameObject TileObject { set; get; }
         public IGridEntity ContainedEntity { set; get; }
+    }
+
+    public class MapInfo
+    {
+        public string Type { set; get; }
     }
 }

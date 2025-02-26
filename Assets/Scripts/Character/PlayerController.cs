@@ -1,21 +1,16 @@
-using ISN.Entity;
 using ISN.Manager;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace ISN.Character
 {
-    public class PlayerController : ACharacter, IGridEntity
+    public class PlayerController : ACharacter
     {
         public static PlayerController Instance { private set; get; }
-        public Vector2Int CurrentPosition { set; private get; }
-
-        public GameObject GameObject { private set; get; }
 
         private void Awake()
         {
             Instance = this;
-            GameObject = gameObject;
         }
 
         private Vector2Int ToVector2Int(Vector2 v)
