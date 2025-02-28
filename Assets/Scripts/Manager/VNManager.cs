@@ -21,6 +21,7 @@ namespace ISN.Manager
         private TextDisplay _display;
 
         private SO.CharacterInfo _currentSpeaker;
+        private string _speakerNameOverrides;
 
         private Story _story;
 
@@ -99,10 +100,17 @@ namespace ISN.Manager
             _choiceContainer.gameObject.SetActive(true);
         }
 
-        public void ShowStory(TextAsset asset)
+        public void ShowStory(TextAsset asset, Dictionary<string, object> variables = null)
         {
             _currentSpeaker = null;
             _story = new(asset.text);
+            if (variables != null)
+            {
+                foreach (var v in variables)
+                {
+                    _story.variablesState[v.Key] = v.Value;
+                }
+            }
             ResetVN();
             DisplayStory(_story.Continue());
         }
@@ -130,13 +138,18 @@ namespace ISN.Manager
                         }
                         break;
 
+                    case "name":
+                        if (content == "none") _speakerNameOverrides = null;
+                        else _speakerNameOverrides = content;
+                        break;
+
                     default:
                         Debug.LogError($"Unknown story key: {s[0]}");
                         break;
                 }
             }
             _display.ToDisplay = text;
-            if (_currentSpeaker == null)
+            if (_currentSpeaker == null && _speakerNameOverrides == null)
             {
                 _namePanel.SetActive(false);
                 //_characterImage.gameObject.SetActive(false);
@@ -144,7 +157,7 @@ namespace ISN.Manager
             else
             {
                 _namePanel.SetActive(true);
-                _nameText.text = _currentSpeaker.DisplayName;
+                _nameText.text = _speakerNameOverrides ?? _currentSpeaker.DisplayName;
                 // TODO: If VN sprites are added, add this back
                 //_characterImage.gameObject.SetActive(true);
                 // _characterImage.sprite = _currentCharacter.Image;
@@ -184,6 +197,7 @@ namespace ISN.Manager
             {
                 if (_container.activeInHierarchy)
                 {
+                    /*
                     // If we click on a button, we don't advance the 
                     PointerEventData pointerEventData = new(EventSystem.current)
                     {
@@ -197,7 +211,7 @@ namespace ISN.Manager
                         {
                             return;
                         }
-                    }
+                    }*/
 
                     ResetVN();
                     DisplayNextDialogue();

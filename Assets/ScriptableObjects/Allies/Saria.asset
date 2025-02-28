@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3545c6dd3843cd648a90711d8cbb50c2, type: 3}
-  m_Name: Kya
+  m_Name: Saria
   m_EditorClassIdentifier: 
-  Key: kya
+  Key: saria
   Prefab: {fileID: 3313809587892727151, guid: 9d9a793a5a181f044b82abd041385cdd, type: 3}
-  DisplayName: Kya
-  LobbyStory: {fileID: 4900000, guid: bb5cb6423855765419bfe99acd706a59, type: 3}
+  DisplayName: Saria
+  LobbyStory: {fileID: 4900000, guid: fdcccff5dad552548b8822a83e86681b, type: 3}

@@ -1,7 +1,7 @@
 using ISN.Entity;
 using ISN.Manager;
 using ISN.SO;
-using UnityEngine;
+using System.Collections.Generic;
 
 namespace ISN.Character
 {
@@ -9,9 +9,14 @@ namespace ISN.Character
     {
         public AllyInfo Info { set; get; }
 
+        private bool _isFirstConversation = true;
+
         public void Interact(PlayerController pc)
         {
-            VNManager.Instance.ShowStory(Info.LobbyStory);
+            VNManager.Instance.ShowStory(Info.LobbyStory, new Dictionary<string, object>{
+                { "firstSpeak", _isFirstConversation }
+            });
+            _isFirstConversation = false;
         }
     }
 }
