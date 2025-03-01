@@ -1,14 +1,10 @@
 using Ink.Runtime;
-using ISN.SO;
+using ISN.Character;
 using ISN.Text;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace ISN.Manager
@@ -39,6 +35,8 @@ namespace ISN.Manager
 
         [SerializeField]
         private GameObject _choicePrefab;
+
+        private ACharacter _speaker;
 
         private bool _isSkipEnabled;
         private float _skipTimer;
@@ -100,8 +98,9 @@ namespace ISN.Manager
             _choiceContainer.gameObject.SetActive(true);
         }
 
-        public void ShowStory(TextAsset asset, Dictionary<string, object> variables = null)
+        public void ShowStory(TextAsset asset, ACharacter speaker, Dictionary<string, object> variables = null)
         {
+            _speaker = speaker;
             _currentSpeaker = null;
             _story = new(asset.text);
             if (variables != null)
@@ -141,6 +140,10 @@ namespace ISN.Manager
                     case "name":
                         if (content == "none") _speakerNameOverrides = null;
                         else _speakerNameOverrides = content;
+                        break;
+
+                    case "action":
+                        _speaker.DoDialogueAction(content);
                         break;
 
                     default:

@@ -10,13 +10,29 @@ namespace ISN.Character
         public AllyInfo Info { set; get; }
 
         private bool _isFirstConversation = true;
+        private bool _isRecruited = false;
 
         public void Interact(PlayerController pc)
         {
-            VNManager.Instance.ShowStory(Info.LobbyStory, new Dictionary<string, object>{
+            if (_isRecruited) return;
+
+            VNManager.Instance.ShowStory(Info.LobbyStory, this, new Dictionary<string, object>{
                 { "firstSpeak", _isFirstConversation }
             });
             _isFirstConversation = false;
+        }
+
+        public override void DoDialogueAction(string action)
+        {
+            switch (action)
+            {
+                case "recruit":
+                    _isRecruited = true;
+                    break;
+
+                default:
+                    throw new System.NotImplementedException();
+            }
         }
     }
 }
