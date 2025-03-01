@@ -488,7 +488,7 @@ MonoBehaviour:
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
-  m_ApplyToSortingLayers: 00000000a55d3975
+  m_ApplyToSortingLayers: 00000000a55d3975f79a974a
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -843,6 +843,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _resources:
   - {fileID: 11400000, guid: 732f576d8974b5d439a3c12c0d671467, type: 2}
+  - {fileID: 11400000, guid: 67186e9c00e8efd47b1c63858ad4fa6b, type: 2}
 --- !u!114 &770417483
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1521,7 +1522,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1966693797
-  m_SortingLayer: 1
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

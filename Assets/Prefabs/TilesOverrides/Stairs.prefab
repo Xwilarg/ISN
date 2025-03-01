@@ -10,8 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 20515524335440863}
   - component: {fileID: 457671975843278357}
+  - component: {fileID: 4097511882375736371}
   m_Layer: 0
-  m_Name: WorldTile
+  m_Name: Stairs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -73,10 +74,10 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1251449591
+  m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 0a6f59baac6336d4194fd44eacad33bd, type: 3}
+  m_Sprite: {fileID: -2660968328804394481, guid: a9f746c3ddbff944385c9e402e201fff, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -87,3 +88,15 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &4097511882375736371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2882937730962441860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 884565682cd155642acaa7e800b9727d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
