@@ -11,7 +11,7 @@ namespace ISN.Entity
 
         public void WalkOn(PlayerController pc)
         {
-            throw new System.NotImplementedException();
+            Debug.Log("I was walked on");
         }
     }
 }

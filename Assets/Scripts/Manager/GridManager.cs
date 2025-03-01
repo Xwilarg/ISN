@@ -123,19 +123,31 @@ namespace ISN.Manager
             return tile?.ContainedEntity;
         }
 
-        public bool TryMove(Vector2Int current, Vector2Int direction)
+        public bool TryMove(Vector2Int current, Vector2Int direction, out IWalkable walkable)
         {
             var tile = _map[current.y][current.x];
             Assert.IsNotNull(tile.ContainedEntity);
 
             var dest = current + direction;
             var destTile = GetTile(dest);
-            if (destTile == null || !destTile.TileInfo.IsWalkable || destTile.ContainedEntity != null)
+            if (destTile == null || !destTile.TileInfo.IsWalkable)
             {
+                walkable = null;
                 return false;
             }
 
-            destTile.ContainedEntity = tile.ContainedEntity;
+            var entity = destTile.ContainedEntity;
+            if (entity != null)
+            {
+                walkable = entity as IWalkable;
+                if (walkable == null)
+                {
+                    return false;
+                }
+            }
+            else walkable = null;
+
+                destTile.ContainedEntity = tile.ContainedEntity;
             destTile.ContainedEntity.CurrentPosition = dest;
             destTile.ContainedEntity.GameObject.transform.position = (Vector2)dest * TileSizeUnit;
             tile.ContainedEntity = null;

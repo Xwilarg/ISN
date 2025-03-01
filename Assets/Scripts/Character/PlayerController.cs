@@ -37,7 +37,11 @@ namespace ISN.Character
             if (value.phase == InputActionPhase.Started && !VNManager.Instance.IsPlayingStory)
             {
                 var dir = ToVector2Int(value.ReadValue<Vector2>());
-                GridManager.Instance.TryMove(CurrentPosition, dir);
+                GridManager.Instance.TryMove(CurrentPosition, dir, out var walkable);
+                if (walkable != null)
+                {
+                    walkable.WalkOn(this);
+                }
                 _lookDirection = dir;
             }
         }
