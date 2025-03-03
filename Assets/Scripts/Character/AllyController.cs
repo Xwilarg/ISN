@@ -28,6 +28,7 @@ namespace ISN.Character
             {
                 case "recruit":
                     _isRecruited = true;
+                    transform.parent = null;
                     break;
 
                 default:
