@@ -7,18 +7,7 @@ namespace ISN.Character
 {
     public class PlayerController : ACharacter
     {
-        public static PlayerController Instance { private set; get; }
         private Vector2Int _lookDirection = Vector2Int.up;
-
-        private void Awake()
-        {
-            Instance = this;
-        }
-
-        private void Start()
-        {
-            PartyManager.Instance.AddToParty(this);
-        }
 
         private void OnDrawGizmos()
         {
