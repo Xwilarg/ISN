@@ -28,7 +28,7 @@ namespace ISN.Manager
         private const float TileSizeUnit = 1.28f;
 
         private Transform _mapContainer;
-        private readonly List<List<Tile>> _map = new();
+        private readonly Dictionary<Vector2Int, Tile> _map = new();
 
         private void Awake()
         {
@@ -105,9 +105,7 @@ namespace ISN.Manager
                         tile.ContainedEntity.CurrentPosition = new Vector2Int(x, y);
                         speEntity.transform.position = new Vector2(x, y) * TileSizeUnit;
                     }
-                    tiles.Add(tile);
                 }
-                _map.Add(tiles);
             }
 
             Assert.IsTrue(_spawnPos != null, "Spawn pos not set");
@@ -145,20 +143,22 @@ namespace ISN.Manager
             var obj = Instantiate(_tilePrefab, _mapContainer);
             obj.transform.position = new Vector2(pos.x, pos.y) * TileSizeUnit;
             obj.GetComponent<SpriteRenderer>().sprite = info.Sprite;
-            return new Tile()
+            var tile = new Tile()
             {
                 TileInfo = info,
                 TileObject = obj
             };
+            _map.Add(pos, tile);
+            return tile;
         }
 
         private Tile GetTile(Vector2Int position)
         {
-            if (position.y >= _map.Count || position.x >= _map[position.y].Count)
+            if (_map.ContainsKey(position))
             {
-                return null; // Out of bounds
+                return _map[position];
             }
-            return _map[position.y][position.x];
+            return null;
         }
 
         public IGridEntity Get(Vector2Int position)
@@ -197,7 +197,7 @@ namespace ISN.Manager
         /// </summary>
         public bool TryMove(Vector2Int current, Vector2Int direction, out IWalkable walkable)
         {
-            var tile = _map[current.y][current.x];
+            var tile = _map[current];
             Assert.IsNotNull(tile.ContainedEntity);
 
             var dest = current + direction;
