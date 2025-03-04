@@ -70,6 +70,8 @@ namespace ISN.Manager
                 .Split('\n')
                 .Reverse()
                 .ToArray();
+
+            Vector2Int? _spawnPos = null;
             for (int y = 0; y < lines.Length; y++)
             {
                 List<Tile> tiles = new();
@@ -87,9 +89,8 @@ namespace ISN.Manager
 
                     if (c == 'S') // Player spawn
                     {
-                        tile.ContainedEntity = PlayerController.Instance;
-                        tile.ContainedEntity.CurrentPosition = new Vector2Int(x, y);
-                        PlayerController.Instance.transform.position = new Vector2(x, y) * TileSizeUnit;
+                        Assert.IsTrue(_spawnPos == null, "Spawn pos was already set");
+                        _spawnPos = new Vector2Int(x, y);
                     }
                     else if (c >= '0' && c <= '9') // Special events
                     {
@@ -107,6 +108,34 @@ namespace ISN.Manager
                     tiles.Add(tile);
                 }
                 _map.Add(tiles);
+            }
+
+            Assert.IsTrue(_spawnPos != null, "Spawn pos not set");
+        }
+
+        public void SpawnParty(Vector2Int pos)
+        {
+            var tile = GetTile(pos);
+            Assert.IsNotNull(tile, "Attempted to spawn party out of bounds");
+            var player = PartyManager.Instance.Party.First();
+            tile.ContainedEntity = player;
+            tile.ContainedEntity.CurrentPosition = pos;
+            player.GameObject.transform.position = (Vector2)pos * TileSizeUnit;
+
+            var adjacents = new Vector2Int[] { Vector2Int.up, Vector2Int.left, Vector2Int.down, Vector2Int.right };
+            foreach (var charac in PartyManager.Instance.Party.Skip(1))
+            {
+                foreach (var a in adjacents)
+                {
+                    tile = GetTile(pos + a);
+                    if (IsWalkable(pos + a, out var w))
+                    {
+                        tile.ContainedEntity = charac;
+                        tile.ContainedEntity.CurrentPosition = pos + a;
+                        player.GameObject.transform.position = (Vector2)(pos + a) * TileSizeUnit;
+                        return;
+                    }
+                }
             }
         }
 
@@ -137,20 +166,19 @@ namespace ISN.Manager
             return tile?.ContainedEntity;
         }
 
-        public bool TryMove(Vector2Int current, Vector2Int direction, out IWalkable walkable)
+        /// <summary>
+        /// Returns if the tile can be walked on
+        /// </summary>
+        public bool IsWalkable(Vector2Int pos, out IWalkable walkable)
         {
-            var tile = _map[current.y][current.x];
-            Assert.IsNotNull(tile.ContainedEntity);
-
-            var dest = current + direction;
-            var destTile = GetTile(dest);
-            if (destTile == null || !destTile.TileInfo.IsWalkable)
+            var target = GetTile(pos);
+            if (target == null || !target.TileInfo.IsWalkable)
             {
                 walkable = null;
                 return false;
             }
 
-            var entity = destTile.ContainedEntity;
+            var entity = target.ContainedEntity;
             if (entity != null)
             {
                 walkable = entity as IWalkable;
@@ -160,8 +188,25 @@ namespace ISN.Manager
                 }
             }
             else walkable = null;
+            return true;
+        }
 
-                destTile.ContainedEntity = tile.ContainedEntity;
+        /// <summary>
+        /// Try to move an entity from <paramref name="current"/> to <paramref name="direction"/>
+        /// </summary>
+        public bool TryMove(Vector2Int current, Vector2Int direction, out IWalkable walkable)
+        {
+            var tile = _map[current.y][current.x];
+            Assert.IsNotNull(tile.ContainedEntity);
+
+            var dest = current + direction;
+            var destTile = GetTile(dest);
+            if (!IsWalkable(dest, out walkable))
+            {
+                return false;
+            }
+
+            destTile.ContainedEntity = tile.ContainedEntity;
             destTile.ContainedEntity.CurrentPosition = dest;
             destTile.ContainedEntity.GameObject.transform.position = (Vector2)dest * TileSizeUnit;
             tile.ContainedEntity = null;

@@ -876,6 +876,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49b6a1aafb81997439beac8a00d967d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _floor: {fileID: 11400000, guid: d9d473c5b83f46147967ef26f14ff952, type: 2}
+  _wall: {fileID: 11400000, guid: bc1307add45dc444fb3095c89371c3af, type: 2}
 --- !u!114 &770417485
 MonoBehaviour:
   m_ObjectHideFlags: 0

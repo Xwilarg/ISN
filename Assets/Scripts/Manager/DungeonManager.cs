@@ -1,3 +1,4 @@
+using ISN.SO;
 using UnityEngine;
 
 namespace ISN.Manager
@@ -9,6 +10,9 @@ namespace ISN.Manager
     {
         public static DungeonManager Instance { private set; get; }
 
+        [SerializeField]
+        private TileInfo _floor, _wall;
+
         private void Awake()
         {
             Instance = this;
@@ -16,9 +20,23 @@ namespace ISN.Manager
 
         public void GoToDungeon()
         {
-            foreach (var charac in PartyManager.Instance.Party)
+            GridManager.Instance.ClearMap();
+
+            SpawnRoom();
+
+            GridManager.Instance.SpawnParty(Vector2Int.zero);
+        }
+
+        private const int FloorSize = 2;
+        private void SpawnRoom()
+        {
+            for (int y = -FloorSize; y <= FloorSize; y++)
             {
-                
+                GridManager.Instance.SpawnTile(new Vector2Int(y, FloorSize + 1), _wall);
+                for (int x = -FloorSize; x <= FloorSize; x++)
+                {
+                    GridManager.Instance.SpawnTile(Vector2Int.zero, _floor);
+                }
             }
         }
     }
