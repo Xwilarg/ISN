@@ -15,6 +15,11 @@ namespace ISN.Character
             Instance = this;
         }
 
+        private void Start()
+        {
+            PartyManager.Instance.AddToParty(this);
+        }
+
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.green;

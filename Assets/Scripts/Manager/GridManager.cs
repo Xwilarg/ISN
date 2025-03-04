@@ -10,6 +10,9 @@ using Newtonsoft.Json.Serialization;
 
 namespace ISN.Manager
 {
+    /// <summary>
+    /// Manage tiles on a grid
+    /// </summary>
     public class GridManager : MonoBehaviour
     {
         public static GridManager Instance { private set; get; }
@@ -33,7 +36,7 @@ namespace ISN.Manager
             _defaultTile = _tiles.First(x => x.Character == '.');
         }
 
-        public void LoadMap(TextAsset map)
+        public void ClearMap()
         {
             if (_mapContainer != null) // Clear old map
             {
@@ -45,6 +48,11 @@ namespace ISN.Manager
                 _map.Clear();
             }
             _mapContainer = new GameObject("Map").transform;
+        }
+
+        public void LoadMap(TextAsset map)
+        {
+            ClearMap();
 
             var mapInfo = map.text.Split('=').Select(x => x.Trim()).ToArray();
 
@@ -74,14 +82,8 @@ namespace ISN.Manager
                         _ when c >= '0' && c <= '9' => _defaultTile,
                         _ => _tiles.First(x => x.Character == c)
                     };
-                    var obj = Instantiate(_tilePrefab, _mapContainer);
-                    obj.transform.position = new Vector2(x, y) * TileSizeUnit;
-                    obj.GetComponent<SpriteRenderer>().sprite = info.Sprite;
-                    var tile = new Tile()
-                    {
-                        TileInfo = info,
-                        TileObject = obj
-                    };
+
+                    var tile = SpawnTile(new Vector2Int(x, y), info);
 
                     if (c == 'S') // Player spawn
                     {
@@ -106,6 +108,18 @@ namespace ISN.Manager
                 }
                 _map.Add(tiles);
             }
+        }
+
+        public Tile SpawnTile(Vector2Int pos, TileInfo info)
+        {
+            var obj = Instantiate(_tilePrefab, _mapContainer);
+            obj.transform.position = new Vector2(pos.x, pos.y) * TileSizeUnit;
+            obj.GetComponent<SpriteRenderer>().sprite = info.Sprite;
+            return new Tile()
+            {
+                TileInfo = info,
+                TileObject = obj
+            };
         }
 
         private Tile GetTile(Vector2Int position)

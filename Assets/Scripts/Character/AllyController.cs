@@ -29,6 +29,8 @@ namespace ISN.Character
                 case "recruit":
                     _isRecruited = true;
                     transform.parent = null;
+
+                    PartyManager.Instance.AddToParty(this);
                     break;
 
                 default:

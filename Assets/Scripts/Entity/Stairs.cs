@@ -1,4 +1,5 @@
 using ISN.Character;
+using ISN.Manager;
 using UnityEngine;
 
 namespace ISN.Entity
@@ -11,7 +12,7 @@ namespace ISN.Entity
 
         public void WalkOn(PlayerController pc)
         {
-            Debug.Log("I was walked on");
+            DungeonManager.Instance.GoToDungeon();
         }
     }
 }

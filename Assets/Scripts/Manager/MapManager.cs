@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace ISN.Manager
 {
+    /// <summary>
+    /// Manage maps
+    /// </summary>
     public class MapManager : MonoBehaviour
     {
         [SerializeField]
