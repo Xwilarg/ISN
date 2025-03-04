@@ -33,11 +33,18 @@ namespace ISN.Manager
             for (int y = -FloorSize; y <= FloorSize; y++)
             {
                 GridManager.Instance.SpawnTile(new Vector2Int(y, FloorSize + 1), _wall);
+                GridManager.Instance.SpawnTile(new Vector2Int(y, -FloorSize - 1), _wall);
+                GridManager.Instance.SpawnTile(new Vector2Int(FloorSize + 1, y), _wall);
+                GridManager.Instance.SpawnTile(new Vector2Int(-FloorSize - 1, y ), _wall);
                 for (int x = -FloorSize; x <= FloorSize; x++)
                 {
-                    GridManager.Instance.SpawnTile(Vector2Int.zero, _floor);
+                    GridManager.Instance.SpawnTile(new Vector2Int(x, y), _floor);
                 }
             }
+            GridManager.Instance.SpawnTile(new Vector2Int(FloorSize + 1, FloorSize + 1), _wall);
+            GridManager.Instance.SpawnTile(new Vector2Int(FloorSize + 1, -FloorSize - 1), _wall);
+            GridManager.Instance.SpawnTile(new Vector2Int(-FloorSize - 1, -FloorSize - 1), _wall);
+            GridManager.Instance.SpawnTile(new Vector2Int(-FloorSize - 1, FloorSize + 1), _wall);
         }
     }
 }

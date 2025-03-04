@@ -111,6 +111,7 @@ namespace ISN.Manager
             }
 
             Assert.IsTrue(_spawnPos != null, "Spawn pos not set");
+            SpawnParty(_spawnPos.Value);
         }
 
         public void SpawnParty(Vector2Int pos)
